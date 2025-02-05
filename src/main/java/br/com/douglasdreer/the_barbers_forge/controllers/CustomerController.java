@@ -19,7 +19,7 @@ import java.util.Objects;
  * <p>This controller delegates business logic to the {@link CustomerService} layer.</p>
  *
  * @author Douglas Dreer
- * @since 0.0.1
+ * @since 0.0.2
  */
 @RestController
 @RequestMapping("/customers")
@@ -29,7 +29,7 @@ public class CustomerController {
     /**
      * Constructor that initializes the controller with the required service dependency.
      *
-     * @param customerService the service that handles customer-related business logic
+     * @param customerService: {@link CustomerService} the service that handles customer-related business logic
      */
     public CustomerController(CustomerService customerService) {
         this.customerService = customerService;
@@ -50,9 +50,9 @@ public class CustomerController {
      * <p>This method handles the HTTP GET request with two query parameters: <code>firstName</code> and <code>lastName</code>.
      * It calls the service to retrieve a list of customers that match the provided names.</p>
      *
-     * @param firstName the first name of the customers to be searched for
-     * @param lastName  the last name of the customers to be searched for
-     * @return a {@link ResponseEntity} containing a list of {@link CustomerDTO} objects that match the provided first and last name
+     * @param firstName {@link String} the first name of the customers to be searched for
+     * @param lastName {@link String} the last name of the customers to be searched for
+     * @return a {@link ResponseEntity} containing a  {@link List} of {@link CustomerDTO} objects that match the provided first and last name
      *         or an empty list if no customers are found
      */
     @GetMapping(params = {"firstName", "lastName"})
@@ -70,7 +70,7 @@ public class CustomerController {
      * <p>This method handles the HTTP GET request with a query parameter: <code>cpf</code>.
      * It calls the service to retrieve the customer that matches the provided cpf.</p>
      *
-     * @param cpf the cpf of the customer to be searched for
+     * @param cpf {@link String} the cpf of the customer to be searched for
      * @return a {@link ResponseEntity} containing a {@link CustomerDTO} object with the customer details
      *         that match the provided cpf, or a 404 error if no customer is found
      */
@@ -82,7 +82,7 @@ public class CustomerController {
     /**
      * Searches for a customer by ID.
      *
-     * @param id the unique identifier of the customer
+     * @param id {@link Long} the unique identifier of the customer
      * @return {@link ResponseEntity} containing a {@link CustomerDTO}
      */
     @GetMapping("/{id}")
@@ -94,7 +94,6 @@ public class CustomerController {
      * Creates a new customer and returns the created customer data along with the URI of the newly created resource.
      *
      * @param datas the {@link CustomerDTO} object containing customer data
-     * @param request the HTTP request containing additional request information
      * @return a {@link ResponseEntity} containing the created {@link CustomerDTO} and the location of the new resource
      */
     @PostMapping
@@ -113,7 +112,7 @@ public class CustomerController {
      * <p>If the provided customer ID does not match the ID in the request URL, an {@link IllegalArgumentException} is thrown.</p>
      * <p>Upon successful update, the updated customer information is returned along with a 200 (OK) status and the location of the updated resource.</p>
      *
-     * @param id the unique identifier of the customer to be updated
+     * @param id {@link Long} the unique identifier of the customer to be updated
      * @param datas the updated customer data in the form of a {@link CustomerDTO}
      * @return a {@link ResponseEntity} containing the updated {@link CustomerDTO} and a 200 (OK) status
      * @throws IllegalArgumentException if the provided customer ID does not match the ID in the request URL
@@ -143,5 +142,4 @@ public class CustomerController {
         customerService.delete(id);
         return ResponseEntity.ok("Customer deleted with successfully.");
     }
-
 }
