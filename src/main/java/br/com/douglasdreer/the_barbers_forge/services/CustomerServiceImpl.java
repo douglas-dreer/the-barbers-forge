@@ -112,16 +112,12 @@ public class CustomerServiceImpl implements CustomerService {
      */
     @Override
     public CustomerDTO create(CustomerDTO dto) {
-        try {
-            if (existCPF(dto.getCPF())) {
+        if (existCPF(dto.getCPF())) {
                 throw new DuplicateDataException("A customer with the same CPF already exists.");
-            }
+        }
 
-            Customer savedEntity = customerRepository.save(converterService.convertTo(dto, Customer.class));
-            return converterService.convertTo(savedEntity, CustomerDTO.class);
-        } catch (DuplicateDataException e) {
-            throw e;
-       }
+        Customer savedEntity = customerRepository.save(converterService.convertTo(dto, Customer.class));
+        return converterService.convertTo(savedEntity, CustomerDTO.class);
     }
 
     /**
