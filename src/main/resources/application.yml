@@ -1,0 +1,18 @@
+spring:
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: jdbc:postgresql://localhost:5432/the-barbers-forge
+    username: ${DATABASE_USER:postgres}
+    password: ${DATABASE_PASSWORD:Admin@123}
+    driverClassName: org.postgresql.Driver
+  sql:
+    init:
+      platform: postgres
+server:
+  servlet:
+    context-path: /api/v1
+  port: 8081
