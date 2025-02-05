@@ -1,5 +1,7 @@
 # The Barber's Forge
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=douglas-dreer_the-barbers-forge&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=douglas-dreer_the-barbers-forge)
+
 ## Descrição
 **The Barber's Forge** é um sistema completo para a gestão de barbearias, desenvolvido com Java 21 e Spring Boot. O projeto oferece funcionalidades para gerenciar clientes, produtos, serviços, agendamentos e controle financeiro, além de otimizar o gerenciamento de estoque.
 
