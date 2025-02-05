@@ -9,6 +9,7 @@ import br.com.douglasdreer.the_barbers_forge.repositories.CustomerRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * <h1>CustomerServiceImpl</h1>
@@ -26,6 +27,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository customerRepository;
     private final ConverterService converterService;
+    private final ValidateDocumentService validateDocumentService;
 
     /**
      * Constructor with dependency injection.
@@ -33,9 +35,10 @@ public class CustomerServiceImpl implements CustomerService {
      * @param customerRepository repository responsible for CRUD operations on customers
      * @param converterService   service to convert between entities and DTOs
      */
-    public CustomerServiceImpl(CustomerRepository customerRepository, ConverterService converterService) {
+    public CustomerServiceImpl(CustomerRepository customerRepository, ConverterService converterService, ValidateDocumentService validateDocumentService) {
         this.customerRepository = customerRepository;
         this.converterService = converterService;
+        this.validateDocumentService = validateDocumentService;
     }
 
     /**
@@ -163,13 +166,23 @@ public class CustomerServiceImpl implements CustomerService {
         customerRepository.deleteById(id);
     }
 
+
     /**
-     * Check if exist CPF
-     * @param cpf Document CPF
-     * @return boolean
+     * Checks whether the provided CPF exists in the customer repository.
+     *
+     * The CPF must follow the Brazilian CPF format: 11 digits (numbers only, without punctuation).
+     *
+     * @param cpf the CPF number as a string (digits only, without punctuation).
+     *            Must not be null or empty.
+     *
+     * @return {@code true} if the CPF exists in the repository, {@code false} otherwise.
+     *
+     * @throws IllegalArgumentException if the CPF is null, empty, or improperly formatted.
      */
     @Override
     public boolean existCPF(String cpf) {
-       return customerRepository.findByCPFExists(cpf) >= 1;
+        validateDocumentService.validateDocumentCPF(cpf);
+        return customerRepository.findByCPFExists(cpf) >= 1;
     }
+
 }

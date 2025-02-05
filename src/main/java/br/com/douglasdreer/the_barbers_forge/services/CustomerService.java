@@ -1,6 +1,7 @@
 package br.com.douglasdreer.the_barbers_forge.services;
 
 import br.com.douglasdreer.the_barbers_forge.dtos.CustomerDTO;
+import br.com.douglasdreer.the_barbers_forge.exceptions.ValidateDocumentServiceException;
 
 import java.util.List;
 
@@ -69,9 +70,18 @@ public interface CustomerService {
    void delete(Long id);
 
    /**
-    * Check if CPF exist
-    * @param cpf Document CPF
-    * @return {@link Boolean}
+    * Checks whether the provided CPF exists in the system.    *
+    * This method first validates the CPF using the {@link ValidateDocumentService}
+    * to ensure that the CPF follows the correct format and is not null or empty.
+    *
+    * @param cpf the CPF number as a text string (digits only, without punctuation).
+    *            Must not be null or empty.
+    *
+    * @return {@code true} if the CPF exists in the repository, {@code false} otherwise.
+    *
+    * @throws ValidateDocumentServiceException if the CPF is invalid or improperly formatted.
+    *
+    * @since 0.0.1
     */
    boolean existCPF(String cpf);
 }

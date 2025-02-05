@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>br.com.douglasdreer</groupId>
 	<artifactId>the-barbers-forge</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>The Barber&apos;s Forge</name>
 	<description>O The Barber&apos;s Forge é uma solução completa e inovadora para a gestão de barbearias, oferecendo funcionalidades modernas e eficientes para atender às necessidades de clientes e profissionais do setor. O sistema foi projetado para otimizar processos, melhorar a experiência do usuário e garantir uma administração mais organizada e eficaz.</description>
 	<url/>
