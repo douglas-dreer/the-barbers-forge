@@ -24,7 +24,7 @@
 
 2. **Acessar o Diretório:**
    ```bash
-   cd the_barbers_forge
+   cd the-barbers-forge
    ```
 
 3. **Compilar e Executar:**
@@ -33,7 +33,7 @@
    ```
 
 4. **Acessar a Aplicação:**
-    - URL padrão: [http://localhost:8080](http://localhost:8080)
+    - URL padrão: [http://localhost:8081](http://localhost:8080)
 
 ## Configuração do Banco de Dados
 O projeto está configurado com o banco de dados **PostgreSQL**.
@@ -43,7 +43,7 @@ O projeto está configurado com o banco de dados **PostgreSQL**.
    - Se ainda não tiver o PostgreSQL instalado, siga [este link](https://www.postgresql.org/download/) para instalar.
 
 2. **Criar o Banco de Dados:**
-   - No PostgreSQL, crie o banco de dados `the_barbers_forge`:
+   - No PostgreSQL, crie o banco de dados `the-barbers-forge`:
      ```sql
      CREATE DATABASE the_barbers_forge;
      ```
@@ -53,7 +53,7 @@ O projeto está configurado com o banco de dados **PostgreSQL**.
      ```yml
      spring:
       datasource:
-        url: jdbc:postgresql://localhost:5432/the_barbers_forge
+        url: jdbc:postgresql://localhost:5432/the-barbers-forge
         username: your_username
         password: your_password
         driver-class-name: org.postgresql.Driver
