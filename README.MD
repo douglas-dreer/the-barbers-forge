@@ -19,7 +19,7 @@
 ## Como Executar o Projeto
 1. **Clonar o Repositório:**
    ```bash
-   git clone https://github.com/douglas-dreer/the_barbers_forge.git
+   git clone https://github.com/douglas-dreer/the-barbers-forge.git
    ```
 
 2. **Acessar o Diretório:**
