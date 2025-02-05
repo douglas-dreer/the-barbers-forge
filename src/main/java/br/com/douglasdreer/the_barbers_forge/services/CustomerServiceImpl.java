@@ -6,6 +6,7 @@ import br.com.douglasdreer.the_barbers_forge.exceptions.CustomerServiceException
 import br.com.douglasdreer.the_barbers_forge.exceptions.DuplicateDataException;
 import br.com.douglasdreer.the_barbers_forge.exceptions.ResourceNotFoundException;
 import br.com.douglasdreer.the_barbers_forge.repositories.CustomerRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.List;
  * @author Douglas Dreer
  * @since 0.0.1
  */
+@Slf4j
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
@@ -47,11 +49,16 @@ public class CustomerServiceImpl implements CustomerService {
      */
     @Override
     public List<CustomerDTO> findAll() {
-        return customerRepository
-                .findAll()
-                .stream()
-                .map(item -> converterService.convertTo(item, CustomerDTO.class))
-                .toList();
+        try {
+            return customerRepository
+                    .findAll()
+                    .stream()
+                    .map(item -> converterService.convertTo(item, CustomerDTO.class))
+                    .toList();
+        } catch (Exception e) {
+            log.error(e.getLocalizedMessage());
+            throw new CustomerServiceException(e.getLocalizedMessage());
+        }
     }
 
     /**
