@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * <h1>ConverterService</h1>
@@ -76,7 +75,7 @@ public class ConverterService {
     public <S, T> List<T> mapList(List<S> sourceList, Class<T> targetClass) {
         return sourceList.stream()
                 .map(element -> modelMapper.map(element, targetClass))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**

@@ -32,17 +32,17 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
     List<Customer> findByFirstNameAndLastName(String firstName, String lastName);
 
     /**
-     * Check if exist CPF
-     * @param cpf Document CPF
+     * Check if exist cpf
+     * @param cpf Document cpf
      * @return {@link Integer}
      */
-    @Query("SELECT COUNT(c.id) FROM Customer c WHERE c.CPF = :cpf")
-    Integer findByCPFExists(String cpf);
+    @Query("SELECT COUNT(c.id) FROM Customer c WHERE c.cpf = :cpf")
+    Integer findBycpfExists(String cpf);
 
     /**
-     * Find customer by CPF
-     * @param cpf Document CPF
+     * Find customer by cpf
+     * @param cpf Document cpf
      * @return {@link Customer}
      */
-    Customer findCustomerByCPF(String cpf);
+    Customer findCustomerBycpf(String cpf);
 }

@@ -1,5 +1,6 @@
 package br.com.douglasdreer.the_barbers_forge.services;
 
+import br.com.douglasdreer.the_barbers_forge.TheBarbersForgeApplication;
 import br.com.douglasdreer.the_barbers_forge.dtos.CustomerDTO;
 import br.com.douglasdreer.the_barbers_forge.exceptions.CustomerServiceException;
 import br.com.douglasdreer.the_barbers_forge.exceptions.DuplicateDataException;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
@@ -17,20 +19,21 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+@SpringBootTest(classes = TheBarbersForgeApplication.class)
+@ActiveProfiles("test")
+@Transactional
+@Rollback
 public class CustomerServiceIntegrationTest {
-    private final Long id = 1L;
-    private final String CPF = "02886612901";
-    private final String FIRST_NAME = "Millie";
-    private final String LAST_NAME = "Haag";
+    private static final Long ID = 1L;
+    private static final String CPF = "12345678901";
+    private static final String FIRST_NAME = "João";
+    private static final String LAST_NAME = "Da Silva";
 
     @Autowired
     private CustomerService customerService;
 
     @Test
-    @Transactional
-    @Rollback
-    public void mustReturnSuccessWhenCreateCustomer() {
+    void mustReturnSuccessWhenCreateCustomer() {
         CustomerDTO dto = createAnCustomer(null);
         CustomerDTO customerSaved = customerService.create(dto);
         assertNotNull(customerSaved);
@@ -42,67 +45,57 @@ public class CustomerServiceIntegrationTest {
     }
 
     @Test
-    @Transactional
-    @Rollback
-    public void mustReturnExceptionWhenDuplicateData() {
+    void mustReturnDuplicateDataExceptionWhenCreateCustomer() {
         CustomerDTO duplicateDto = createAnCustomer(null);
-        duplicateDto.setCPF(CPF);
+        duplicateDto.setCpf(CPF);
         assertThrows(DuplicateDataException.class, () -> customerService.create(duplicateDto));
     }
 
     @Test
-    @Transactional
-    public void mustReturnSuccessWhenFindCustomerById() {
+    void mustReturnSuccessWhenFindCustomerById() {
         CustomerDTO customerFound = customerService.findById(2L);
         assertNotNull(customerFound);
         assertNotNull(customerFound.getId());
     }
 
     @Test
-    @Transactional
-    public void mustReturnNullWhenFindCustomerById() {
+    void mustReturnNullWhenFindCustomerById() {
         CustomerDTO customerFound = customerService.findById(99L);
         assertNull(customerFound);
     }
 
     @Test
-    @Transactional
-    public void mustReturnSuccessWhenFindCustomerByFullName() {
+    void mustReturnSuccessWhenFindCustomerByFullName() {
         List<CustomerDTO> customers = customerService.findByFullName(FIRST_NAME, LAST_NAME);
         assertFalse((customers.isEmpty()));
         assertEquals(1, customers.size());
-        assertEquals(FIRST_NAME, customers.get(0).getFirstName());
-        assertEquals(LAST_NAME, customers.get(0).getLastName());
+        assertEquals(FIRST_NAME, customers.getFirst().getFirstName());
+        assertEquals(LAST_NAME, customers.getFirst().getLastName());
     }
 
     @Test
-    @Transactional
-    public void mustReturnSuccessWhenFindCustomerByCPF() {
-        CustomerDTO customerFound = customerService.findByCpf(CPF);
+     void mustReturnSuccessWhenFindCustomerBycpf() {
+        CustomerDTO customerFound = customerService.findBycpf(CPF);
         assertNotNull(customerFound);
-        assertEquals(CPF, customerFound.getCPF());
+        assertEquals(CPF, customerFound.getCpf());
     }
 
     @Test
-    @Transactional
-    public void mustReturnResourceNotFoundExceptionWhenCustomerByCPF() {
-        Assertions.assertThrows(ResourceNotFoundException.class, () -> customerService.findByCpf("1234567890"));
+     void mustReturnResourceNotFoundExceptionWhenCustomerBycpf() {
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> customerService.findBycpf("1234567890"));
     }
 
     @Test
-    @Transactional
-    public void mustReturnSuccessWhenFindAllCustomers() {
+     void mustReturnSuccessWhenFindAllCustomers() {
         List<CustomerDTO> customers = customerService.findAll();
         assertNotNull(customers);
         assertFalse(customers.isEmpty());
-        assertEquals(2, customers.size());
+        assertEquals(3, customers.size());
     }
 
     @Test
-    @Transactional
-    @Rollback
-    public void mustReturnSuccessWhenEditCustomer() {
-       CustomerDTO customerEdited = createAnCustomer(id);
+     void mustReturnSuccessWhenEditCustomer() {
+       CustomerDTO customerEdited = createAnCustomer(ID);
        customerEdited.setFirstName("Mario");
        customerEdited.setLastName("Souza");
 
@@ -115,35 +108,27 @@ public class CustomerServiceIntegrationTest {
     }
 
     @Test
-    @Transactional
-    @Rollback
-    public void mustReturnResourceNotFoundExceptionWhenEditCustomer() {
+     void mustReturnResourceNotFoundExceptionWhenEditCustomer() {
         CustomerDTO customerEdited = createAnCustomer(99L);
 
         assertThrows(ResourceNotFoundException.class, () -> customerService.edit(customerEdited));
     }
 
     @Test
-    @Transactional
-    @Rollback
-    public void mustReturnCustomerServiceExceptionWhenFirstNameIsNull() {
+     void mustReturnCustomerServiceExceptionWhenFirstNameIsNull() {
         assertThrows(CustomerServiceException.class, () -> {
             customerService.edit(null);
         });
     }
 
     @Test
-    @Transactional
-    @Rollback
-    public void mustReturnSuccessWhenDeleteCustomer() {
-        customerService.delete(id);
-        assertNull(customerService.findById(id));
+     void mustReturnSuccessWhenDeleteCustomer() {
+        customerService.delete(ID);
+        assertNull(customerService.findById(ID));
     }
 
     @Test
-    @Transactional
-    @Rollback
-    public void mustReturnResourceNotFoundExceptionWhenDeleteCustomer() {
+     void mustReturnResourceNotFoundExceptionWhenDeleteCustomer() {
         assertThrows(ResourceNotFoundException.class, () -> customerService.delete(99L));
     }
 
@@ -152,10 +137,10 @@ public class CustomerServiceIntegrationTest {
         if (withId != null) {
             dto.setId(withId);
         }
-        dto.setFirstName("João");
+        dto.setFirstName("Lucas");
         dto.setLastName("Da Silva");
-        dto.setCPF(RandomStringUtils.randomAlphanumeric(10));
-        dto.setAddress("Avenida Brasil, 1500");
+        dto.setCpf(RandomStringUtils.randomNumeric(11));
+        dto.setAddress("Rua São Paulo, 1320");
         dto.setBirthDate(LocalDate.now());
         dto.setPhone(RandomStringUtils.randomNumeric(11));
         return dto;

@@ -9,7 +9,6 @@ import br.com.douglasdreer.the_barbers_forge.repositories.CustomerRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.regex.Pattern;
 
 /**
  * <h1>CustomerServiceImpl</h1>
@@ -72,18 +71,18 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     /**
-     * Searches for a customer by their CPF (Brazilian Individual Taxpayer Registry number).
-     * <p>This method queries the database to find a customer matching the provided CPF.</p>
+     * Searches for a customer by their cpf (Brazilian Individual Taxpayer Registry number).
+     * <p>This method queries the database to find a customer matching the provided cpf.</p>
      *
-     * <p>If no customer is found with the given CPF, a {@link ResourceNotFoundException} is thrown.</p>
+     * <p>If no customer is found with the given cpf, a {@link ResourceNotFoundException} is thrown.</p>
      *
-     * @param cpf the CPF of the customer to be searched for
+     * @param cpf the cpf of the customer to be searched for
      * @return a {@link CustomerDTO} object containing the customer's details if found
-     * @throws ResourceNotFoundException if no customer is found with the provided CPF
+     * @throws ResourceNotFoundException if no customer is found with the provided cpf
      */
     @Override
-    public CustomerDTO findByCpf(String cpf) {
-        Customer foundCustomer =  customerRepository.findCustomerByCPF(cpf);
+    public CustomerDTO findBycpf(String cpf) {
+        Customer foundCustomer =  customerRepository.findCustomerBycpf(cpf);
         if (foundCustomer == null) {
             throw new ResourceNotFoundException("Customer not found");
         }
@@ -107,16 +106,16 @@ public class CustomerServiceImpl implements CustomerService {
     /**
      * Creates a new customer in the system.
      *
-     * <p>If a duplicate CPF is detected, a {@link DuplicateDataException} is thrown.</p>
+     * <p>If a duplicate cpf is detected, a {@link DuplicateDataException} is thrown.</p>
      *
      * @param dto the data of the customer to be registered
      * @return {@link CustomerDTO} object with the information of the created customer
-     * @throws DuplicateDataException if the CPF already exists in the system
+     * @throws DuplicateDataException if the cpf already exists in the system
      */
     @Override
     public CustomerDTO create(CustomerDTO dto) {
-        if (existCPF(dto.getCPF())) {
-                throw new DuplicateDataException("A customer with the same CPF already exists.");
+        if (existcpf(dto.getCpf())) {
+                throw new DuplicateDataException("A customer with the same cpf already exists.");
         }
 
         Customer savedEntity = customerRepository.save(converterService.convertTo(dto, Customer.class));
@@ -168,21 +167,21 @@ public class CustomerServiceImpl implements CustomerService {
 
 
     /**
-     * Checks whether the provided CPF exists in the customer repository.
+     * Checks whether the provided cpf exists in the customer repository.
      *
-     * The CPF must follow the Brazilian CPF format: 11 digits (numbers only, without punctuation).
+     * The cpf must follow the Brazilian cpf format: 11 digits (numbers only, without punctuation).
      *
-     * @param cpf the CPF number as a string (digits only, without punctuation).
+     * @param cpf the cpf number as a string (digits only, without punctuation).
      *            Must not be null or empty.
      *
-     * @return {@code true} if the CPF exists in the repository, {@code false} otherwise.
+     * @return {@code true} if the cpf exists in the repository, {@code false} otherwise.
      *
-     * @throws IllegalArgumentException if the CPF is null, empty, or improperly formatted.
+     * @throws IllegalArgumentException if the cpf is null, empty, or improperly formatted.
      */
     @Override
-    public boolean existCPF(String cpf) {
-        validateDocumentService.validateDocumentCPF(cpf);
-        return customerRepository.findByCPFExists(cpf) >= 1;
+    public boolean existcpf(String cpf) {
+        validateDocumentService.validateDocumentcpf(cpf);
+        return customerRepository.findBycpfExists(cpf) >= 1;
     }
 
 }

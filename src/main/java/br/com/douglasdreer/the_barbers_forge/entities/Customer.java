@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  * <h1>Customer</h1>
  * <p>Entity class that represents the customer in the database.
  * This class is mapped to the "TBL0001_CUSTOMERS" table and contains customer-related data such as
- * their name, CPF, address, phone number, date of birth, and timestamps for creation and updates.</p>
+ * their name, cpf, address, phone number, date of birth, and timestamps for creation and updates.</p>
  *
  * <p>The {@link Customer} class is a JPA entity, and its attributes are mapped to columns in the database table.</p>
  *
@@ -50,11 +50,11 @@ public class Customer {
     private String lastName;
 
     /**
-     * The CPF (Cadastro de Pessoas Físicas) number of the customer.
+     * The cpf (Cadastro de Pessoas Físicas) number of the customer.
      * This field must be unique and cannot be null.
      */
     @Column(unique = true, nullable = false, updatable = false)
-    private String CPF;
+    private String cpf;
 
     /**
      * The address of the customer.

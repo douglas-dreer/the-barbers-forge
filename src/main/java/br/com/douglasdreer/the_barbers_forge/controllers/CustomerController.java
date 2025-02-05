@@ -3,7 +3,6 @@ package br.com.douglasdreer.the_barbers_forge.controllers;
 import br.com.douglasdreer.the_barbers_forge.dtos.CustomerDTO;
 import br.com.douglasdreer.the_barbers_forge.exceptions.ResourceNotFoundException;
 import br.com.douglasdreer.the_barbers_forge.services.CustomerService;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -57,7 +56,7 @@ public class CustomerController {
      *         or an empty list if no customers are found
      */
     @GetMapping(params = {"firstName", "lastName"})
-    public ResponseEntity<List<CustomerDTO>> findByFirstName(
+    public ResponseEntity<List<CustomerDTO>> findByFullName(
             @RequestParam("firstName") String firstName,
             @RequestParam("lastName") String lastName
     ) {
@@ -67,17 +66,17 @@ public class CustomerController {
 
 
     /**
-     * Searches for a customer by their CPF (Brazilian Individual Taxpayer Registry number).
+     * Searches for a customer by their cpf (Brazilian Individual Taxpayer Registry number).
      * <p>This method handles the HTTP GET request with a query parameter: <code>cpf</code>.
-     * It calls the service to retrieve the customer that matches the provided CPF.</p>
+     * It calls the service to retrieve the customer that matches the provided cpf.</p>
      *
-     * @param cpf the CPF of the customer to be searched for
+     * @param cpf the cpf of the customer to be searched for
      * @return a {@link ResponseEntity} containing a {@link CustomerDTO} object with the customer details
-     *         that match the provided CPF, or a 404 error if no customer is found
+     *         that match the provided cpf, or a 404 error if no customer is found
      */
     @GetMapping(params = { "cpf" })
-    public ResponseEntity<CustomerDTO> findByCPF(@RequestParam("cpf") String cpf) {
-        return ResponseEntity.ok(customerService.findByCpf(cpf));
+    public ResponseEntity<CustomerDTO> findBycpf(@RequestParam("cpf") String cpf) {
+        return ResponseEntity.ok(customerService.findBycpf(cpf));
     }
 
     /**
@@ -99,7 +98,7 @@ public class CustomerController {
      * @return a {@link ResponseEntity} containing the created {@link CustomerDTO} and the location of the new resource
      */
     @PostMapping
-    public ResponseEntity<CustomerDTO> create(@RequestBody CustomerDTO datas, HttpServletRequest request) {
+    public ResponseEntity<CustomerDTO> create(@RequestBody CustomerDTO datas) {
         CustomerDTO savedData = customerService.create(datas);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -142,7 +141,7 @@ public class CustomerController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id) {
         customerService.delete(id);
-        return ResponseEntity.ok("Customer deleted with successful.");
+        return ResponseEntity.ok("Customer deleted with successfully.");
     }
 
 }

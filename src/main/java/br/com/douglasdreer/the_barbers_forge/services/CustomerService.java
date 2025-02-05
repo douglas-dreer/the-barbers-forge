@@ -31,12 +31,12 @@ public interface CustomerService {
    List<CustomerDTO> findByFullName(String firstName, String lastName);
 
    /**
-    * Searches for a customer by CPF (Brazilian Individual Taxpayer Registry number).
+    * Searches for a customer by cpf (Brazilian Individual Taxpayer Registry number).
     *
-    * @param cpf the CPF of the customer to be searched
+    * @param cpf the cpf of the customer to be searched
     * @return {@link CustomerDTO} object representing the customer, or {@code null} if not found
     */
-   CustomerDTO findByCpf(String cpf);
+   CustomerDTO findBycpf(String cpf);
 
    /**
     * Searches for a customer by their unique ID.
@@ -70,18 +70,18 @@ public interface CustomerService {
    void delete(Long id);
 
    /**
-    * Checks whether the provided CPF exists in the system.    *
-    * This method first validates the CPF using the {@link ValidateDocumentService}
-    * to ensure that the CPF follows the correct format and is not null or empty.
+    * Checks whether the provided cpf exists in the system.    *
+    * This method first validates the cpf using the {@link ValidateDocumentService}
+    * to ensure that the cpf follows the correct format and is not null or empty.
     *
-    * @param cpf the CPF number as a text string (digits only, without punctuation).
+    * @param cpf the cpf number as a text string (digits only, without punctuation).
     *            Must not be null or empty.
     *
-    * @return {@code true} if the CPF exists in the repository, {@code false} otherwise.
+    * @return {@code true} if the cpf exists in the repository, {@code false} otherwise.
     *
-    * @throws ValidateDocumentServiceException if the CPF is invalid or improperly formatted.
+    * @throws ValidateDocumentServiceException if the cpf is invalid or improperly formatted.
     *
     * @since 0.0.1
     */
-   boolean existCPF(String cpf);
+   boolean existcpf(String cpf);
 }

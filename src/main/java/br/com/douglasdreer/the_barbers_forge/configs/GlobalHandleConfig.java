@@ -24,10 +24,11 @@ import java.time.LocalDateTime;
  */
 @RestControllerAdvice
 public class GlobalHandleConfig {
+    private static final String MSG_INTERNAL_SERVER_ERROR = "Internal Server Error";
 
     /**
      * Handles exceptions related to data integrity violations, such as unique constraint violations.
-     * <p>If a violation occurs (e.g., CPF already exists in the database), it returns a 400 (Bad Request) error
+     * <p>If a violation occurs (e.g., cpf already exists in the database), it returns a 400 (Bad Request) error
      * with a detailed message for the user, without exposing sensitive database information.</p>
      *
      * @param ex the exception thrown during the violation of a unique constraint
@@ -36,28 +37,27 @@ public class GlobalHandleConfig {
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ErrorDTO> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
         if (ex.getCause() != null && ex.getCause().getMessage().contains("unique constraint")) {
-            // Check for a unique constraint violation (e.g., CPF duplication)
             ErrorDTO errorDTO = new ErrorDTO(
-                    400L, // Bad Request
-                    "Duplicate Entry", // Brief error title
-                    "This CPF is already registered.", // Friendly error message
-                    LocalDateTime.now() // Timestamp of when the error occurred
+                    400L,
+                    "Duplicate Entry",
+                    "This cpf is already registered.",
+                    LocalDateTime.now()
             );
             return new ResponseEntity<>(errorDTO, HttpStatus.BAD_REQUEST);
         }
 
-        // Handle other integrity issues with a generic internal error
+
         ErrorDTO errorDTO = new ErrorDTO(
-                500L, // Internal Server Error
-                "Internal Server Error", // Brief error title
-                "An unexpected error occurred.", // Friendly error message
-                LocalDateTime.now() // Timestamp of when the error occurred
+                500L,
+                MSG_INTERNAL_SERVER_ERROR,
+                "An unexpected error occurred.",
+                LocalDateTime.now()
         );
         return new ResponseEntity<>(errorDTO, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     /**
-     * Handles custom exceptions related to unique constraint violations, such as a duplicate CPF.
+     * Handles custom exceptions related to unique constraint violations, such as a duplicate cpf.
      * <p>It provides a 400 (Bad Request) status and a relevant error message to the user.</p>
      *
      * @param ex the custom exception thrown when a unique constraint is violated
@@ -111,10 +111,10 @@ public class GlobalHandleConfig {
     @ExceptionHandler(UnsupportedOperationException.class)
     public ResponseEntity<ErrorDTO> handleUnsupportedOperationException(UnsupportedOperationException ex) {
         ErrorDTO errorDTO = new ErrorDTO(
-                500L, // Internal Server Error
-                "Internal Server Error", // Brief error title
-                "Function not implement still.", // Friendly error message
-                LocalDateTime.now() // Timestamp of when the error occurred
+                500L,
+                MSG_INTERNAL_SERVER_ERROR,
+                "Function not implement still.",
+                LocalDateTime.now()
         );
         return new ResponseEntity<>(errorDTO, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -127,15 +127,13 @@ public class GlobalHandleConfig {
      * @return a ResponseEntity with an ErrorDTO and a 500 status code
      */
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorDTO> handleGeneralException(Exception ex) {
+    public ResponseEntity<ErrorDTO> handleGeneralException() {
         ErrorDTO errorDTO = new ErrorDTO(
-                500L, // Internal Server Error
-                "Internal Server Error", // Brief error title
-                "An unexpected error occurred.", // Friendly error message
-                LocalDateTime.now() // Timestamp of when the error occurred
+                500L,
+                MSG_INTERNAL_SERVER_ERROR,
+                "An unexpected error occurred.",
+                LocalDateTime.now()
         );
         return new ResponseEntity<>(errorDTO, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
-
 }

@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
  * <p>Data Transfer Object (DTO) for transferring customer data between layers of the application.
  * This class represents the customer details and is used to send data in the API responses.</p>
  *
- * <p>This class contains basic customer information such as name, CPF, address, phone number,
+ * <p>This class contains basic customer information such as name, cpf, address, phone number,
  * date of birth, and timestamps for creation and update.</p>
  *
  * @author Douglas Dreer
@@ -39,9 +39,9 @@ public class CustomerDTO {
     private String lastName;
 
     /**
-     * The CPF (Cadastro de Pessoas Físicas) number of the customer.
+     * The cpf (Cadastro de Pessoas Físicas) number of the customer.
      */
-    private String CPF;
+    private String cpf;
 
     /**
      * The address of the customer.

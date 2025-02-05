@@ -1,5 +1,7 @@
--- data.sql
-INSERT INTO TBL0001_CUSTOMERS (id, first_name, last_name, CPF, address, birth_date, phone) VALUES
-                                                                                               (1, 'João', 'Da Silva', '1234567890', 'Avenida Brasil, 1500', '1990-01-01', '11999999999'),
-                                                                                               (2, 'Maria', 'Dos Santos', '2345678901', 'Rua das Flores, 200', '1992-02-02', '11988888888'),
-                                                                                               (3, 'Pedro', 'Almeida', '3456789012', 'Praça da Sé, 300', '1985-03-03', '11977777777');
+INSERT INTO TBL0001_CUSTOMERS (first_name, last_name, cpf, address, birth_date, phone, created_at, updated_at)
+VALUES ('João', 'Da Silva', '12345678901', 'Avenida Brasil, 1500', '1990-01-01', '11999999999', CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP),
+       ('Maria', 'Dos Santos', '23456789012', 'Rua das Flores, 200', '1992-02-02', '11988888888', CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP),
+       ('Pedro', 'Almeida', '34567890124', 'Praça da Sé, 300', '1985-03-03', '11977777777', CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP);

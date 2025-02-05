@@ -56,7 +56,7 @@ public class CustomerControllerIntegrationTest {
     public static void setup() {
         data.setFirstName("Joaquin");
         data.setLastName("Phoenix");
-        data.setCPF("01234567890");
+        data.setCpf("01234567890");
         data.setPhone("11911111111");
         data.setBirthDate(LocalDate.now());
         data.setAddress("Rua dos Bobos, 0");
@@ -119,21 +119,21 @@ public class CustomerControllerIntegrationTest {
     }
 
     /**
-     * <h3>Test: Find Customer by CPF</h3>
+     * <h3>Test: Find Customer by cpf</h3>
      *
-     * <p>Ensures that retrieving a customer by CPF returns the expected result.</p>
+     * <p>Ensures that retrieving a customer by cpf returns the expected result.</p>
      *
      * @throws Exception if an error occurs during the request.
      * @since 2025
      */
     @Test
-    void mustReturnSuccessWhenFindByCPF() throws Exception {
-        final String CPF = "23456789012";
+    void mustReturnSuccessWhenFindBycpf() throws Exception {
+        final String cpf = "23456789012";
         MockHttpServletRequestBuilder getMethod = get(BASE_URL)
-                .param("cpf", CPF);
+                .param("cpf", cpf);
         mockMvc.perform(getMethod)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.cpf", is(CPF)));
+                .andExpect(jsonPath("$.cpf", is(cpf)));
     }
 
 

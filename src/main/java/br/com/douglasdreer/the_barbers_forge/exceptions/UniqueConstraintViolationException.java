@@ -4,7 +4,7 @@ package br.com.douglasdreer.the_barbers_forge.exceptions;
  * <h1>UniqueConstraintViolationException</h1>
  * <p>Exception class that represents a violation of a unique constraint in the database.</p>
  * <p>Thrown when an attempt to insert or update a record with a duplicate value occurs,
- * violating a unique constraint, such as a CPF that already exists in the database.</p>
+ * violating a unique constraint, such as a cpf that already exists in the database.</p>
  *
  * @author Douglas Dreer
  * @since 0.0.1
