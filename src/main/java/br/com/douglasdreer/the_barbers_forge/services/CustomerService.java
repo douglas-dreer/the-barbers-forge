@@ -70,8 +70,8 @@ public interface CustomerService {
 
    /**
     * Check if CPF exist
-    * @param: CPF - The document CPF
-    * @return boolean
+    * @param cpf Document CPF
+    * @return {@link Boolean}
     */
    boolean existCPF(String cpf);
 }

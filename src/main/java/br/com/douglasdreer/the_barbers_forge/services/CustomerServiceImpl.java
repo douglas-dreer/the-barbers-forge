@@ -165,7 +165,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     /**
      * Check if exist CPF
-     * @param cpf
+     * @param cpf Document CPF
      * @return boolean
      */
     @Override

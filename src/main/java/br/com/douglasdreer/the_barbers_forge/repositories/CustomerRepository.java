@@ -33,7 +33,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
     /**
      * Check if exist CPF
-     * @param cpf
+     * @param cpf Document CPF
      * @return {@link Integer}
      */
     @Query("SELECT COUNT(c.id) FROM Customer c WHERE c.CPF = :cpf")
@@ -41,7 +41,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
     /**
      * Find customer by CPF
-     * @param cpf
+     * @param cpf Document CPF
      * @return {@link Customer}
      */
     Customer findCustomerByCPF(String cpf);
