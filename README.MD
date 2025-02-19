@@ -6,6 +6,7 @@
 **The Barber's Forge** é um sistema completo para a gestão de barbearias, desenvolvido com Java 21 e Spring Boot. O projeto oferece funcionalidades para gerenciar clientes, produtos, serviços, agendamentos e controle financeiro, além de otimizar o gerenciamento de estoque.
 
 ## Funcionalidades (Em Progresso)
+
 - **Gerenciamento de Cadastro de Clientes:** Registro detalhado com informações pessoais e histórico de atendimentos.
 - **Gerenciamento de Cadastro de Produtos:** Gestão de itens para venda e consumo interno.
 - **Gerenciamento de Cadastro de Serviços:** Definição de serviços oferecidos com preços e durações personalizadas.
@@ -88,6 +89,7 @@ psql -h localhost -U your_username -d the_barbers_forge
 - `application.properties`: Configuração do projeto.
 
 ## Futuras Melhorias
+
 - Gerenciamento de Cadastro de Clientes.
 - Gerenciamento de Cadastro de Produtos.
 - Gerenciamento de Cadastro de Serviços.

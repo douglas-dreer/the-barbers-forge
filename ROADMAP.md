@@ -37,7 +37,8 @@ Este documento serve para organizar as atividades planejadas para o projeto **Th
 
 - **Prazos Flexíveis**: Os prazos são estimativas e podem variar dependendo da complexidade de cada atividade.
 - **Prioridades**: As atividades podem ser ajustadas conforme novas prioridades surgirem.
-- **Atualizações**: Este documento deve ser atualizado regularmente para refletir o progresso e quaisquer mudanças no cronograma.
+- **Atualizações**: Este documento deve ser atualizado regularmente para refletir o progresso e quaisquer mudanças no
+  cronograma.
 
 ---
 
