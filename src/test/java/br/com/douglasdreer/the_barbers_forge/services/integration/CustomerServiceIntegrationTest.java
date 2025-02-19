@@ -1,10 +1,11 @@
-package br.com.douglasdreer.the_barbers_forge.services;
+package br.com.douglasdreer.the_barbers_forge.services.integration;
 
 import br.com.douglasdreer.the_barbers_forge.TheBarbersForgeApplication;
 import br.com.douglasdreer.the_barbers_forge.dtos.CustomerDTO;
 import br.com.douglasdreer.the_barbers_forge.exceptions.CustomerServiceException;
 import br.com.douglasdreer.the_barbers_forge.exceptions.DuplicateDataException;
 import br.com.douglasdreer.the_barbers_forge.exceptions.ResourceNotFoundException;
+import br.com.douglasdreer.the_barbers_forge.services.CustomerService;
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -74,15 +75,15 @@ public class CustomerServiceIntegrationTest {
     }
 
     @Test
-     void mustReturnSuccessWhenFindCustomerBycpf() {
-        CustomerDTO customerFound = customerService.findBycpf(CPF);
+     void mustReturnSuccessWhenFindCustomerbyCpf() {
+        CustomerDTO customerFound = customerService.findbyCpf(CPF);
         assertNotNull(customerFound);
         assertEquals(CPF, customerFound.getCpf());
     }
 
     @Test
-     void mustReturnResourceNotFoundExceptionWhenCustomerBycpf() {
-        Assertions.assertThrows(ResourceNotFoundException.class, () -> customerService.findBycpf("1234567890"));
+     void mustReturnResourceNotFoundExceptionWhenCustomerbyCpf() {
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> customerService.findbyCpf("1234567890"));
     }
 
     @Test

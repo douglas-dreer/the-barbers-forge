@@ -1,4 +1,4 @@
-package br.com.douglasdreer.the_barbers_forge.controllers;
+package br.com.douglasdreer.the_barbers_forge.controllers.integration;
 
 import br.com.douglasdreer.the_barbers_forge.dtos.CustomerDTO;
 import br.com.douglasdreer.the_barbers_forge.services.ConverterService;
@@ -127,7 +127,7 @@ public class CustomerControllerIntegrationTest {
      * @since 2025
      */
     @Test
-    void mustReturnSuccessWhenFindBycpf() throws Exception {
+    void mustReturnSuccessWhenFindbyCpf() throws Exception {
         final String cpf = "23456789012";
         MockHttpServletRequestBuilder getMethod = get(BASE_URL)
                 .param("cpf", cpf);

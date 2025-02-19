@@ -1,7 +1,9 @@
-package br.com.douglasdreer.the_barbers_forge.services;
+package br.com.douglasdreer.the_barbers_forge.services.integration;
 
 import br.com.douglasdreer.the_barbers_forge.dtos.CustomerDTO;
 import br.com.douglasdreer.the_barbers_forge.entities.Customer;
+import br.com.douglasdreer.the_barbers_forge.exceptions.ConverterServiceException;
+import br.com.douglasdreer.the_barbers_forge.services.ConverterService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,7 +14,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -69,6 +71,15 @@ class ConverterServiceTest {
     }
 
     /**
+     * Tests whether the {@code convertTo} method throws a {@link ConverterServiceException}
+     * when the conversion fails due to a null parameter.
+     */
+    @Test
+    void mustReturnConverterExceptionWhenConvertTo() {
+        assertThrows(ConverterServiceException.class, () -> converterService.convertTo(null, String.class));
+    }
+
+    /**
      * Tests the successful conversion of a {@link Customer} object to its JSON string representation.
      * Verifies that the resulting JSON is not null and contains the customer's first name.
      *
@@ -102,14 +113,13 @@ class ConverterServiceTest {
      * Tests the successful mapping of a list of {@link Customer} objects to a list of {@link CustomerDTO} objects.
      * Verifies that the list is not empty and that the mapped elements have the same properties as the original ones.
      *
-     * @throws IOException if the conversion fails
      */
     @Test
-    void mustReturnSuccessWhenMapList() throws IOException {
-        final List<Customer> entityList = Arrays.asList(customer);
+    void mustReturnSuccessWhenMapList() {
+        final List<Customer> entityList = Collections.singletonList(customer);
         final List<CustomerDTO> resultList = converterService.mapList(entityList, CustomerDTO.class);
         assertFalse(resultList.isEmpty());
         assertEquals(1, resultList.size());
-        assertEquals(customer.getFirstName(), resultList.get(0).getFirstName());
+        assertEquals(customer.getFirstName(), resultList.getFirst().getFirstName());
     }
 }
