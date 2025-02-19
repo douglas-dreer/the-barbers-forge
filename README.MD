@@ -5,11 +5,14 @@
 ## Descrição
 **The Barber's Forge** é um sistema completo para a gestão de barbearias, desenvolvido com Java 21 e Spring Boot. O projeto oferece funcionalidades para gerenciar clientes, produtos, serviços, agendamentos e controle financeiro, além de otimizar o gerenciamento de estoque.
 
-## Funcionalidades
-- **Cadastro de Clientes:** Registro detalhado com informações pessoais e histórico de atendimentos.
-- **Cadastro de Produtos:** Gestão de itens para venda e consumo interno.
-- **Cadastro de Serviços:** Definição de serviços oferecidos com preços e durações personalizadas.
+## Funcionalidades (Em Progresso)
+- **Gerenciamento de Cadastro de Clientes:** Registro detalhado com informações pessoais e histórico de atendimentos.
+- **Gerenciamento de Cadastro de Produtos:** Gestão de itens para venda e consumo interno.
+- **Gerenciamento de Cadastro de Serviços:** Definição de serviços oferecidos com preços e durações personalizadas.
 - **Agendamento de Horário:** Calendário interativo com controle de disponibilidade.
+- **Notificações de Horário:** Notificação via e-mail, mensagem de texto ou whatsApp.
+- **Envio de E-mail Propaganda** Envio de promoções via e-mail.
+- **Sistema de Fidelização**: Descontos especiais para fidelização de clientes.
 - **Controle de Caixa (Financeiro):** Monitoramento de movimentações financeiras.
 - **Controle de Estoque:** Acompanhamento de estoque com alertas para reposição.
 
@@ -47,7 +50,7 @@ O projeto está configurado com o banco de dados **PostgreSQL**.
 2. **Criar o Banco de Dados:**
    - No PostgreSQL, crie o banco de dados `the-barbers-forge`:
      ```sql
-     CREATE DATABASE the_barbers_forge;
+     CREATE DATABASE the-barbers-forge;
      ```
 
 3. **Configuração do Banco de Dados no Projeto:**
@@ -85,8 +88,17 @@ psql -h localhost -U your_username -d the_barbers_forge
 - `application.properties`: Configuração do projeto.
 
 ## Futuras Melhorias
+- Gerenciamento de Cadastro de Clientes.
+- Gerenciamento de Cadastro de Produtos.
+- Gerenciamento de Cadastro de Serviços.
+- Gerenciamento de Agendamento de Horário.
+- Notificações de Horário.
+- Envio de E-mail Propaganda.
+- Sistema de Fidelização.
+- Controle de Caixa (Financeiro).
+- Controle de Estoque.
 - Implementação de autenticação e autorização.
-- Documentação em SWAGGER.- 
+- Documentação em SWAGGER.
 - Relatórios financeiros detalhados.
 
 ## Contribuição
