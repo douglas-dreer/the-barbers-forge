@@ -1,9 +1,11 @@
 package br.com.douglasdreer.the_barbers_forge.services;
 
+import br.com.douglasdreer.the_barbers_forge.exceptions.ConverterServiceException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.modelmapper.MappingException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -60,7 +62,11 @@ public class ConverterService {
      * @return the converted object of type {@link D}
      */
     public <D> D convertTo(Object source, Class<D> targetClass) {
-        return modelMapper.map(source, targetClass);
+        try {
+            return modelMapper.map(source, targetClass);
+        } catch (Exception e) {
+            throw new ConverterServiceException(e.getLocalizedMessage());
+        }
     }
 
     /**

@@ -36,7 +36,7 @@ public interface CustomerService {
     * @param cpf the cpf of the customer to be searched
     * @return {@link CustomerDTO} object representing the customer, or {@code null} if not found
     */
-   CustomerDTO findBycpf(String cpf);
+   CustomerDTO findbyCpf(String cpf);
 
    /**
     * Searches for a customer by their unique ID.

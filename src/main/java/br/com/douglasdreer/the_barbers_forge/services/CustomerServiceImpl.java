@@ -88,8 +88,8 @@ public class CustomerServiceImpl implements CustomerService {
      * @throws ResourceNotFoundException if no customer is found with the provided cpf
      */
     @Override
-    public CustomerDTO findBycpf(String cpf) {
-        Customer foundCustomer =  customerRepository.findCustomerBycpf(cpf);
+    public CustomerDTO findbyCpf(String cpf) {
+        Customer foundCustomer =  customerRepository.findCustomerByCpf(cpf);
         if (foundCustomer == null) {
             throw new ResourceNotFoundException("Customer not found");
         }
@@ -125,7 +125,8 @@ public class CustomerServiceImpl implements CustomerService {
                 throw new DuplicateDataException("A customer with the same cpf already exists.");
         }
 
-        Customer savedEntity = customerRepository.save(converterService.convertTo(dto, Customer.class));
+        Customer entity = converterService.convertTo(dto, Customer.class);
+        Customer savedEntity = customerRepository.save(entity);
         return converterService.convertTo(savedEntity, CustomerDTO.class);
     }
 
@@ -155,8 +156,6 @@ public class CustomerServiceImpl implements CustomerService {
             throw new CustomerServiceException("An unexpected error occurred while processing your request.");
         }
     }
-
-
 
     /**
      * Deletes a customer by ID.
@@ -188,7 +187,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public boolean existcpf(String cpf) {
         validateDocumentService.validateDocumentcpf(cpf);
-        return customerRepository.findBycpfExists(cpf) >= 1;
+        return customerRepository.findByCpfExists(cpf) >= 1;
     }
 
 }

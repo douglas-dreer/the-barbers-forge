@@ -75,14 +75,14 @@ public class CustomerServiceIntegrationTest {
     }
 
     @Test
-     void mustReturnSuccessWhenFindCustomerbyCpf() {
+    void mustReturnSuccessWhenFindCustomerByCpf() {
         CustomerDTO customerFound = customerService.findbyCpf(CPF);
         assertNotNull(customerFound);
         assertEquals(CPF, customerFound.getCpf());
     }
 
     @Test
-     void mustReturnResourceNotFoundExceptionWhenCustomerbyCpf() {
+    void mustReturnResourceNotFoundExceptionWhenCustomerByCpf() {
         Assertions.assertThrows(ResourceNotFoundException.class, () -> customerService.findbyCpf("1234567890"));
     }
 

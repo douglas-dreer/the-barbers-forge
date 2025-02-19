@@ -75,8 +75,8 @@ public class CustomerController {
      *         that match the provided cpf, or a 404 error if no customer is found
      */
     @GetMapping(params = { "cpf" })
-    public ResponseEntity<CustomerDTO> findBycpf(@RequestParam("cpf") String cpf) {
-        return ResponseEntity.ok(customerService.findBycpf(cpf));
+    public ResponseEntity<CustomerDTO> findbyCpf(@RequestParam("cpf") String cpf) {
+        return ResponseEntity.ok(customerService.findbyCpf(cpf));
     }
 
     /**
