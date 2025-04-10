@@ -100,3 +100,6 @@
    ```bash
    mvn dependency:resolve
    ```
+
+## Versão: 3.2.5
+Última atualização: 10/04/2025
