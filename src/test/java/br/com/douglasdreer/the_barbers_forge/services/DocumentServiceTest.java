@@ -175,6 +175,13 @@ public class DocumentServiceTest {
     }
 
     @Test
+    public void mustReturnDocumentServiceExceptionWhenDeleteDocumentByIdWithDocumentNotFound() {
+        when(documentRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThrows(DocumentServiceException.class, () -> documentService.deleteDocumentById(1L));
+    }
+
+    @Test
     public void mustReturnExceptionWhenDocumentNotFound() {
         when(documentRepository.findById(anyLong())).thenReturn(Optional.empty());
 

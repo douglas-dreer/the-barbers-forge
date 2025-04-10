@@ -68,11 +68,7 @@ public class DocumentServiceImpl implements DocumentService {
     @Transactional(rollbackFor = Exception.class)
     public void deleteDocumentById(long id) {
         validateDocumentForDelete(id);
-        try {
-            repository.deleteById(id);
-        } catch (Exception e) {
-            throw e;
-        }
+        repository.deleteById(id);
     }
 
     private void validateDocumentForCreate(CreateDocumentRequest document) {
