@@ -5,23 +5,24 @@ Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/) e às [Diretrizes de Versionamento](GUIDELINE.md).
 
-## [0.0.2] - "Potion of Healing" - 10/04/2025
+## [0.0.2] - "Potion of Healing" - 2024-01-19
 
 ### Adicionado
-- ✨ Implementação do gerenciamento de documentos com CRUD completo
-- 🧩 Implementação de CRUD para gerenciamento de clientes com suporte a paginação
-- 📝 Configuração do OpenAPI (Swagger) para documentação da API
-- 🚨 Criação da enumeração MessageErroType para mensagens de erro
-- 🛠️ Implementação da classe ConverterException para tratamento de exceções
+- ✨ Implementação de testes unitários para validação de documentos
+- 🧪 Testes para mapeamento de documentos (DocumentMapper)
+- 🚨 Testes para exceções personalizadas (ValidateDocumentServiceException e UniqueConstraintViolationException)
+- 🔍 Testes para o controlador de documentos (DocumentController)
+- 🛠️ Implementação da classe base de mapeamento (BaseMapper)
 
 ### Alterado
-- ♻️ Refatoração da estrutura do projeto para simplificação
-- 📊 Melhoria na legibilidade do código
+- ♻️ Refatoração dos testes para melhor cobertura
+- 📊 Melhoria na organização dos testes unitários
 
 ### Técnico
-- Implementação de mapeamento e DTOs para documentos
-- Adição de testes unitários para validar o CRUD de documentos
-- Simplificação da arquitetura removendo classes desnecessárias
+- Implementação de testes para conversão entre entidades e DTOs
+- Adição de testes para validação de exceções
+- Melhoria na estrutura de testes do controlador
+- Implementação de classe base para mapeamento de objetos
 
 ## [0.0.1] - 2024-01-17
 
