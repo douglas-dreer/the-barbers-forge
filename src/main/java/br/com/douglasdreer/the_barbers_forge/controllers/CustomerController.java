@@ -1,104 +1,122 @@
 package br.com.douglasdreer.the_barbers_forge.controllers;
 
 import br.com.douglasdreer.the_barbers_forge.dtos.CustomerDTO;
-import br.com.douglasdreer.the_barbers_forge.exceptions.ResourceNotFoundException;
+import br.com.douglasdreer.the_barbers_forge.dtos.request.CreateCustomerRequest;
 import br.com.douglasdreer.the_barbers_forge.services.CustomerService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
-import java.util.Objects;
 
 /**
- * <h1>CustomerController</h1>
- * <p>Controller class that handles HTTP requests for customer-related operations.
- * It provides endpoints for creating and retrieving customers.</p>
- *
- * <p>This controller delegates business logic to the {@link CustomerService} layer.</p>
- *
+ * <h1>Customer Controller</h1>
+ * <p>Controlador responsável por gerenciar as requisições relacionadas aos clientes.
+ * Fornece endpoints para operações CRUD (Criar, Ler, Atualizar, Deletar) de clientes.</p>
+ * 
  * @author Douglas Dreer
- * @since 0.0.2
+ * @version 1.0
+ * @since 2023
  */
 @RestController
 @RequestMapping("/customers")
+@Tag(name = "Clientes", description = "API para gerenciamento de clientes")
 public class CustomerController {
-    private final CustomerService customerService;
+    private final CustomerService service;
 
     /**
-     * Constructor that initializes the controller with the required service dependency.
-     *
-     * @param customerService: {@link CustomerService} the service that handles customer-related business logic
+     * Construtor que recebe o serviço de cliente por injeção de dependência.
+     * 
+     * @param service serviço que contém a lógica de negócio para operações com clientes
      */
-    public CustomerController(CustomerService customerService) {
-        this.customerService = customerService;
+    public CustomerController(CustomerService service) {
+        this.service = service;
     }
 
     /**
-     * Retrieves a list of all customers.
-     *
-     * @return a {@link ResponseEntity} containing a list of {@link CustomerDTO} objects
+     * Busca todos os clientes com paginação.
+     * 
+     * @param page número da página (começa em 0)
+     * @param pageSize quantidade de itens por página
+     * @return ResponseEntity contendo uma página de DTOs de cliente
      */
-    @GetMapping
-    public ResponseEntity<List<CustomerDTO>> findAll() {
-        return ResponseEntity.ok(customerService.findAll());
-    }
-
-    /**
-     * Searches for customers by their first and last name.
-     * <p>This method handles the HTTP GET request with two query parameters: <code>firstName</code> and <code>lastName</code>.
-     * It calls the service to retrieve a list of customers that match the provided names.</p>
-     *
-     * @param firstName {@link String} the first name of the customers to be searched for
-     * @param lastName {@link String} the last name of the customers to be searched for
-     * @return a {@link ResponseEntity} containing a  {@link List} of {@link CustomerDTO} objects that match the provided first and last name
-     *         or an empty list if no customers are found
-     */
-    @GetMapping(params = {"firstName", "lastName"})
-    public ResponseEntity<List<CustomerDTO>> findByFullName(
-            @RequestParam("firstName") String firstName,
-            @RequestParam("lastName") String lastName
+    @GetMapping(params = {"page", "pageSize"})
+    @Operation(
+        summary = "Listar clientes paginados",
+        description = "Retorna uma lista paginada de clientes",
+        responses = {
+            @ApiResponse(
+                responseCode = "200", 
+                description = "Clientes encontrados com sucesso",
+                content = @Content(mediaType = "application/json", schema = @Schema(implementation = Page.class))
+            ),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+        }
+    )
+    public ResponseEntity<Page<CustomerDTO>> findAllCustomersWithPagination(
+            @Parameter(description = "Número da página (iniciando em 0)") @RequestParam(value = "page", defaultValue = "0") int page,
+            @Parameter(description = "Quantidade de registros por página") @RequestParam(value = "pageSize", defaultValue = "50") int pageSize
     ) {
-        List<CustomerDTO> customerList = customerService.findByFullName(firstName, lastName);
-        return ResponseEntity.ok(customerList);
-    }
-
-
-    /**
-     * Searches for a customer by their cpf (Brazilian Individual Taxpayer Registry number).
-     * <p>This method handles the HTTP GET request with a query parameter: <code>cpf</code>.
-     * It calls the service to retrieve the customer that matches the provided cpf.</p>
-     *
-     * @param cpf {@link String} the cpf of the customer to be searched for
-     * @return a {@link ResponseEntity} containing a {@link CustomerDTO} object with the customer details
-     *         that match the provided cpf, or a 404 error if no customer is found
-     */
-    @GetMapping(params = { "cpf" })
-    public ResponseEntity<CustomerDTO> findbyCpf(@RequestParam("cpf") String cpf) {
-        return ResponseEntity.ok(customerService.findbyCpf(cpf));
+        return ResponseEntity.ok(service.findAllCustomersWithPagination(page, pageSize));
     }
 
     /**
-     * Searches for a customer by ID.
-     *
-     * @param id {@link Long} the unique identifier of the customer
-     * @return {@link ResponseEntity} containing a {@link CustomerDTO}
+     * Busca um cliente pelo seu ID.
+     * 
+     * @param id identificador único do cliente
+     * @return ResponseEntity contendo o DTO do cliente encontrado
      */
     @GetMapping("/{id}")
-    public ResponseEntity<CustomerDTO> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(customerService.findById(id));
+    @Operation(
+        summary = "Buscar cliente por ID",
+        description = "Retorna um cliente específico com base no ID fornecido",
+        responses = {
+            @ApiResponse(
+                responseCode = "200", 
+                description = "Cliente encontrado com sucesso",
+                content = @Content(mediaType = "application/json", schema = @Schema(implementation = CustomerDTO.class))
+            ),
+            @ApiResponse(responseCode = "404", description = "Cliente não encontrado"),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+        }
+    )
+    public ResponseEntity<CustomerDTO> findCustomerById(
+            @Parameter(description = "ID do cliente") @PathVariable("id") long id
+    ) {
+        return ResponseEntity.ok(service.findCustomerById(id));
     }
 
     /**
-     * Creates a new customer and returns the created customer data along with the URI of the newly created resource.
-     *
-     * @param datas the {@link CustomerDTO} object containing customer data
-     * @return a {@link ResponseEntity} containing the created {@link CustomerDTO} and the location of the new resource
+     * Cria um novo cliente.
+     * 
+     * @param customer dados do cliente a ser criado
+     * @return ResponseEntity contendo o DTO do cliente criado
      */
     @PostMapping
-    public ResponseEntity<CustomerDTO> create(@RequestBody CustomerDTO datas) {
-        CustomerDTO savedData = customerService.create(datas);
+    @Operation(
+        summary = "Criar cliente",
+        description = "Cria um novo cliente com os dados fornecidos",
+        responses = {
+            @ApiResponse(
+                responseCode = "201", 
+                description = "Cliente criado com sucesso",
+                content = @Content(mediaType = "application/json", schema = @Schema(implementation = CustomerDTO.class))
+            ),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+        }
+    )
+    public ResponseEntity<CustomerDTO> createCustomer(
+            @Parameter(description = "Dados do cliente") @RequestBody CreateCustomerRequest customer
+    ) {
+        CustomerDTO savedData = service.createCustomer(customer);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
@@ -107,39 +125,54 @@ public class CustomerController {
     }
 
     /**
-     * Updates an existing customer in the system.
-     * <p>This endpoint allows you to update the details of a customer identified by their unique ID.</p>
-     * <p>If the provided customer ID does not match the ID in the request URL, an {@link IllegalArgumentException} is thrown.</p>
-     * <p>Upon successful update, the updated customer information is returned along with a 200 (OK) status and the location of the updated resource.</p>
-     *
-     * @param id {@link Long} the unique identifier of the customer to be updated
-     * @param datas the updated customer data in the form of a {@link CustomerDTO}
-     * @return a {@link ResponseEntity} containing the updated {@link CustomerDTO} and a 200 (OK) status
-     * @throws IllegalArgumentException if the provided customer ID does not match the ID in the request URL
+     * Atualiza os dados de um cliente existente.
+     * 
+     * @param id identificador único do cliente
+     * @param customer dados atualizados do cliente
+     * @return ResponseEntity contendo o DTO do cliente atualizado
      */
     @PutMapping("/{id}")
-    public ResponseEntity<CustomerDTO> update(@PathVariable Long id, @RequestBody CustomerDTO datas) {
-        if (!Objects.equals(id, datas.getId())) {
-            throw new IllegalArgumentException("The id of the customer is not the same");
+    @Operation(
+        summary = "Atualizar cliente",
+        description = "Atualiza os dados de um cliente existente com base no ID fornecido",
+        responses = {
+            @ApiResponse(
+                responseCode = "200", 
+                description = "Cliente atualizado com sucesso",
+                content = @Content(mediaType = "application/json", schema = @Schema(implementation = CustomerDTO.class))
+            ),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+            @ApiResponse(responseCode = "404", description = "Cliente não encontrado"),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
         }
-        CustomerDTO editedData = customerService.edit(datas);
-        return ResponseEntity.ok(editedData);
+    )
+    public ResponseEntity<CustomerDTO> updateCustomer(
+            @Parameter(description = "ID do cliente") @PathVariable("id") long id, 
+            @Parameter(description = "Dados atualizados do cliente") @RequestBody CreateCustomerRequest customer
+    ) {
+        return ResponseEntity.ok(service.updateCustomer(id, customer));
     }
 
     /**
-     * Deletes a customer by their unique identifier (ID).
-     * <p>This method attempts to delete the customer with the given ID from the system.</p>
-     *
-     * <p>If the customer is successfully deleted, a success message is returned. If the customer does not exist,
-     * an exception will be thrown (such as {@link ResourceNotFoundException}).</p>
-     *
-     * @param id the unique identifier of the customer to be deleted
-     * @return a {@link ResponseEntity} containing a success message and HTTP status 200 (OK)
-     * @throws ResourceNotFoundException if no customer is found with the provided ID
+     * Remove um cliente pelo seu ID.
+     * 
+     * @param id identificador único do cliente a ser removido
+     * @return ResponseEntity com mensagem de sucesso
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete(@PathVariable Long id) {
-        customerService.delete(id);
-        return ResponseEntity.ok("Customer deleted with successfully.");
+    @Operation(
+        summary = "Excluir cliente",
+        description = "Remove um cliente específico com base no ID fornecido",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "Cliente removido com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Cliente não encontrado"),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+        }
+    )
+    public ResponseEntity<String> deleteCustomerById(
+            @Parameter(description = "ID do cliente") @PathVariable("id") long id
+    ) {
+        service.deleteCustomerById(id);
+        return ResponseEntity.ok("Cliente removido com sucesso");
     }
 }

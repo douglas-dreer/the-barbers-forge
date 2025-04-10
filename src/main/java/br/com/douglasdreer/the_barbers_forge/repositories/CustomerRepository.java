@@ -2,10 +2,8 @@ package br.com.douglasdreer.the_barbers_forge.repositories;
 
 import br.com.douglasdreer.the_barbers_forge.entities.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 
 /**
  * <h1>CustomerRepository</h1>
@@ -21,28 +19,4 @@ import java.util.List;
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
-    /**
-     * Finds customers by their first and last name.
-     *
-     * @param firstName the first name of the customer
-     * @param lastName the last name of the customer
-     * @return a list of {@link Customer} entities matching the provided first and last name
-     */
-    @Query("SELECT c FROM Customer c WHERE c.firstName = :firstName AND c.lastName = :lastName")
-    List<Customer> findByFirstNameAndLastName(String firstName, String lastName);
-
-    /**
-     * Check if exist cpf
-     * @param cpf Document cpf
-     * @return {@link Integer}
-     */
-    @Query("SELECT COUNT(c.id) FROM Customer c WHERE c.cpf = :cpf")
-    Integer findByCpfExists(String cpf);
-
-    /**
-     * Find customer by cpf
-     * @param cpf Document cpf
-     * @return {@link Customer}
-     */
-    Customer findCustomerByCpf(String cpf);
 }

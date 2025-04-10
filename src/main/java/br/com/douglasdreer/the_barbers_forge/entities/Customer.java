@@ -7,6 +7,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <h1>Customer</h1>
@@ -17,7 +19,7 @@ import java.time.LocalDateTime;
  * <p>The {@link Customer} class is a JPA entity, and its attributes are mapped to columns in the database table.</p>
  *
  * @author Douglas Dreer
- * @since 0.0.1
+ * @since 0.0.2
  */
 @Entity
 @Table(name = "TBL0001_CUSTOMERS")
@@ -50,11 +52,16 @@ public class Customer {
     private String lastName;
 
     /**
-     * The cpf (Cadastro de Pessoas Físicas) number of the customer.
-     * This field must be unique and cannot be null.
+     * List of documents associated with the customer.
+     * The relationship is managed through a join table with cascading operations.
      */
-    @Column(unique = true, nullable = false, updatable = false)
-    private String cpf;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "TBL0006_CUSTOMER_DOCUMENT",
+            joinColumns = @JoinColumn(name = "customer_id"),
+            inverseJoinColumns = @JoinColumn(name = "document_id")
+    )
+    private List<Document> documents = new ArrayList<>();
 
     /**
      * The address of the customer.
