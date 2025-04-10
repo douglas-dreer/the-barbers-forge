@@ -120,7 +120,6 @@ public class DocumentController {
     public ResponseEntity<DocumentDTO> findDocumentByParameters(
             @Parameter(description ="Objeto para pesquisa") @RequestBody ParamDocumentRequest paramsDocumentRequest
     ) {
-        log.info("Buscando documento por tipo e número: {}", paramsDocumentRequest);
         return ResponseEntity.ok(service.findByDocumentTypeAndNumber(paramsDocumentRequest));
     }
 
