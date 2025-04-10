@@ -1,5 +1,6 @@
 package br.com.douglasdreer.the_barbers_forge.configs;
 
+
 import br.com.douglasdreer.the_barbers_forge.dtos.ErrorDTO;
 import br.com.douglasdreer.the_barbers_forge.exceptions.ResourceNotFoundException;
 import br.com.douglasdreer.the_barbers_forge.exceptions.UniqueConstraintViolationException;

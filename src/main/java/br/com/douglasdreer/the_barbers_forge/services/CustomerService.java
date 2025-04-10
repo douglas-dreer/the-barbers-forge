@@ -1,87 +1,60 @@
 package br.com.douglasdreer.the_barbers_forge.services;
 
 import br.com.douglasdreer.the_barbers_forge.dtos.CustomerDTO;
-import br.com.douglasdreer.the_barbers_forge.exceptions.ValidateDocumentServiceException;
-
-import java.util.List;
+import br.com.douglasdreer.the_barbers_forge.dtos.request.CreateCustomerRequest;
+import org.springframework.data.domain.Page;
 
 /**
- * <h1>CustomerService</h1>
- * <p>Interface defining the service methods for customer management within the Casa da Navalha application.
- * Includes methods for searching, creating, editing, and deleting customers.</p>
- * @since 0.0.1
+ * <h1>Customer Service</h1>
+ * <p>
+ * Interface que define os serviços disponíveis para gerenciamento de clientes.
+ * Esta interface define os contratos para busca, criação, atualização e remoção de clientes.
+ * </p>
+ * 
  * @author Douglas Dreer
+ * @version 1.0
+ * @since 2023
  */
 public interface CustomerService {
-
-   /**
-    * Retrieves the list of all registered customers.
-    *
-    * @return list of {@link CustomerDTO} objects representing all customers in the system
-    */
-   List<CustomerDTO> findAll();
-
-   /**
-    * Searches for customers by their full name.
-    *
-    * @param firstName the first name of the customer
-    * @param lastName  the last name of the customer
-    * @return list of {@link CustomerDTO} objects representing the customers that match the full name
-    */
-   List<CustomerDTO> findByFullName(String firstName, String lastName);
-
-   /**
-    * Searches for a customer by cpf (Brazilian Individual Taxpayer Registry number).
-    *
-    * @param cpf the cpf of the customer to be searched
-    * @return {@link CustomerDTO} object representing the customer, or {@code null} if not found
-    */
-   CustomerDTO findbyCpf(String cpf);
-
-   /**
-    * Searches for a customer by their unique ID.
-    *
-    * @param id the unique identifier of the customer
-    * @return {@link CustomerDTO} object representing the customer, or {@code null} if not found
-    */
-   CustomerDTO findById(Long id);
-
-   /**
-    * Creates a new customer in the system.
-    *
-    * @param dto the data for the customer to be registered
-    * @return {@link CustomerDTO} object with the details of the created customer
-    */
-   CustomerDTO create(CustomerDTO dto);
-
-   /**
-    * Edits the information of an existing customer.
-    *
-    * @param dto the updated customer data
-    * @return {@link CustomerDTO} object with the updated customer information
-    */
-   CustomerDTO edit(CustomerDTO dto);
-
-   /**
-    * Deletes a customer by their unique ID.
-    *
-    * @param id the unique identifier of the customer to be deleted
-    */
-   void delete(Long id);
-
-   /**
-    * Checks whether the provided cpf exists in the system.    *
-    * This method first validates the cpf using the {@link ValidateDocumentService}
-    * to ensure that the cpf follows the correct format and is not null or empty.
-    *
-    * @param cpf the cpf number as a text string (digits only, without punctuation).
-    *            Must not be null or empty.
-    *
-    * @return {@code true} if the cpf exists in the repository, {@code false} otherwise.
-    *
-    * @throws ValidateDocumentServiceException if the cpf is invalid or improperly formatted.
-    *
-    * @since 0.0.1
-    */
-   boolean existcpf(String cpf);
+    
+    /**
+     * Busca todos os clientes com paginação.
+     * 
+     * @param page número da página (começa em 0)
+     * @param pageSize quantidade de itens por página
+     * @return página de DTOs de clientes
+     */
+    Page<CustomerDTO> findAllCustomersWithPagination(int page, int pageSize);
+    
+    /**
+     * Busca um cliente pelo seu ID.
+     * 
+     * @param id identificador único do cliente
+     * @return DTO do cliente encontrado
+     */
+    CustomerDTO findCustomerById(long id);
+    
+    /**
+     * Cria um novo cliente.
+     * 
+     * @param customer dados do cliente a ser criado
+     * @return DTO do cliente criado
+     */
+    CustomerDTO createCustomer(CreateCustomerRequest customer);
+    
+    /**
+     * Atualiza os dados de um cliente existente.
+     * 
+     * @param id identificador único do cliente
+     * @param customer dados atualizados do cliente
+     * @return DTO do cliente atualizado
+     */
+    CustomerDTO updateCustomer(long id, CreateCustomerRequest customer);
+    
+    /**
+     * Remove um cliente pelo seu ID.
+     * 
+     * @param id identificador único do cliente a ser removido
+     */
+    void deleteCustomerById(long id);
 }

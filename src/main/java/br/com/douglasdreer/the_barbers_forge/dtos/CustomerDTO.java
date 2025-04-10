@@ -4,6 +4,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <h1>CustomerDTO</h1>
@@ -38,10 +39,7 @@ public class CustomerDTO {
      */
     private String lastName;
 
-    /**
-     * The cpf (Cadastro de Pessoas Físicas) number of the customer.
-     */
-    private String cpf;
+    private List<DocumentDTO> documents;
 
     /**
      * The address of the customer.

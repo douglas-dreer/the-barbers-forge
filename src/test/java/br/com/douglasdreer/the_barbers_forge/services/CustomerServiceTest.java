@@ -1,176 +1,229 @@
 package br.com.douglasdreer.the_barbers_forge.services;
 
-import br.com.douglasdreer.the_barbers_forge.dtos.CustomerDTO;
-import br.com.douglasdreer.the_barbers_forge.entities.Customer;
-import br.com.douglasdreer.the_barbers_forge.exceptions.CustomerServiceException;
-import br.com.douglasdreer.the_barbers_forge.exceptions.ResourceNotFoundException;
-import br.com.douglasdreer.the_barbers_forge.repositories.CustomerRepository;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import br.com.douglasdreer.the_barbers_forge.dtos.CustomerDTO;
+import br.com.douglasdreer.the_barbers_forge.dtos.request.CreateCustomerRequest;
+import br.com.douglasdreer.the_barbers_forge.entities.Customer;
+import br.com.douglasdreer.the_barbers_forge.exceptions.ResourceNotFoundException;
+import br.com.douglasdreer.the_barbers_forge.repositories.CustomerRepository;
 
 /**
- * <h1>CustomerServiceTest</h1>
- * <p>Unit test class for {@link CustomerService}.
- * This class tests the functionality of customer-related operations,
- * including retrieval, creation, updating, and deletion of customer records.</p>
- *
- * <p>Tests are executed using {@link SpringExtension} to integrate with the Spring testing framework,
- * ensuring that the {@link CustomerService} and its dependencies are correctly mocked and tested.</p>
- *
- * <p>JUnit 5 and Mockito are used for test lifecycle management and mocking dependencies.</p>
- *
+ * <h1>Customer Service Test</h1>
+ * <p>Testes unitários para a classe {@link CustomerServiceImpl}.</p>
+ * 
  * @author Douglas Dreer
- * @since 0.0.1
+ * @since 0.0.2
  */
-@ExtendWith(SpringExtension.class)
-class CustomerServiceTest {
-
-    private final Customer entity = new Customer();
-    private final CustomerDTO dto = new CustomerDTO();
+@ExtendWith(MockitoExtension.class)
+public class CustomerServiceTest {
 
     @InjectMocks
     private CustomerServiceImpl customerService;
 
     @Mock
-    private ConverterService converterService;
-
-    @Mock
-    private ValidateDocumentService validateDocumentService;
-
-    @Mock
     private CustomerRepository customerRepository;
 
-    /**
-     * Initializes test data before each test case.
-     */
+    @Mock
+    private ModelMapper modelMapper;
+
+    private Customer customer;
+    private CustomerDTO customerDTO;
+    private CreateCustomerRequest createCustomerRequest;
+
     @BeforeEach
-    void setUp() {
-        entity.setId(1L);
-        entity.setFirstName("John");
-        entity.setLastName("Douglas");
-        entity.setCpf("01234567891");
-        entity.setPhone("11123456879");
-        entity.setAddress("5th street, 1000");
-        entity.setBirthDate(LocalDate.now());
-        entity.setCreatedAt(LocalDateTime.now().minusDays(15));
-        entity.setUpdatedAt(LocalDateTime.now());
+    public void setUp() {
+        // Configurar entidade de cliente
+        customer = new Customer();
+        customer.setId(1L);
+        customer.setFirstName("João");
+        customer.setLastName("Silva");
+        customer.setAddress("Rua das Flores, 123");
+        customer.setPhone("(11) 98765-4321");
+        customer.setBirthDate(LocalDate.of(1990, 1, 15));
+        customer.setDocuments(new ArrayList<>());
+        customer.setCreatedAt(LocalDateTime.now());
+        customer.setUpdatedAt(LocalDateTime.now());
 
-        dto.setId(1L);
-        dto.setFirstName("John");
-        dto.setLastName("Douglas");
-        dto.setCpf("01234567891");
-        dto.setPhone("11123456879");
-        dto.setAddress("5th street, 1000");
-        dto.setBirthDate(LocalDate.now());
-        dto.setCreatedAt(LocalDateTime.now().minusDays(15));
-        dto.setUpdatedAt(LocalDateTime.now());
+        // Configurar DTO de cliente
+        customerDTO = new CustomerDTO();
+        customerDTO.setId(1L);
+        customerDTO.setFirstName("João");
+        customerDTO.setLastName("Silva");
+        customerDTO.setAddress("Rua das Flores, 123");
+        customerDTO.setPhone("(11) 98765-4321");
+        customerDTO.setBirthDate(LocalDate.of(1990, 1, 15));
+        customerDTO.setDocuments(new ArrayList<>());
+        customerDTO.setCreatedAt(LocalDateTime.now());
+        customerDTO.setUpdatedAt(LocalDateTime.now());
+
+        // Configurar request de criação de cliente
+        createCustomerRequest = new CreateCustomerRequest();
+        createCustomerRequest.setFirstName("João");
+        createCustomerRequest.setLastName("Silva");
+        createCustomerRequest.setAddress("Rua das Flores, 123");
+        createCustomerRequest.setPhone("(11) 98765-4321");
+        createCustomerRequest.setBirthDate(LocalDate.of(1990, 1, 15));
+        createCustomerRequest.setDocumentIds(new ArrayList<>());
     }
 
     /**
-     * Tests successful retrieval of all customers.
+     * Testa a criação de um cliente.
      */
     @Test
-    void mustReturnSuccessWhenFindAll() {
-        when(customerRepository.findAll()).thenReturn(Collections.singletonList(entity));
-        when(converterService.convertTo(any(), any())).thenReturn(dto);
+    public void mustReturnSuccessWhenCreateCustomer() {
+        when(modelMapper.map(any(CreateCustomerRequest.class), eq(Customer.class))).thenReturn(customer);
+        when(customerRepository.save(any(Customer.class))).thenReturn(customer);
+        when(modelMapper.map(any(Customer.class), eq(CustomerDTO.class))).thenReturn(customerDTO);
 
-        List<CustomerDTO> resultList = customerService.findAll();
-
-        assertFalse(resultList.isEmpty());
-        verify(customerRepository, times(1)).findAll();
-        verify(converterService, times(1)).convertTo(any(), any());
-    }
-
-    /**
-     * Tests if CustomerServiceException is thrown when findAll fails.
-     */
-    @Test
-    void mustReturnCustomerServiceExceptionWhenFindAll() {
-        when(customerRepository.findAll()).thenThrow(new CustomerServiceException("Internal Error"));
-        assertThrows(CustomerServiceException.class, () -> customerService.findAll());
-    }
-
-    /**
-     * Tests successful retrieval of a customer by ID.
-     */
-    @Test
-    void mustReturnSuccessWhenFindById() {
-        Optional<Customer> customerOptional = Optional.of(entity);
-        when(customerRepository.findById(anyLong())).thenReturn(customerOptional);
-        when(converterService.convertTo(any(), any())).thenReturn(dto);
-
-        CustomerDTO result = customerService.findById(1L);
+        CustomerDTO result = customerService.createCustomer(createCustomerRequest);
 
         assertNotNull(result);
-        assertEquals(entity.getId(), result.getId());
+        assertEquals(customerDTO.getId(), result.getId());
+        assertEquals(customerDTO.getFirstName(), result.getFirstName());
+        assertEquals(customerDTO.getLastName(), result.getLastName());
+        
+        verify(customerRepository, times(1)).save(any(Customer.class));
+    }
+
+    /**
+     * Testa a busca de um cliente por ID.
+     */
+    @Test
+    public void mustReturnSuccessWhenFindCustomerById() {
+        when(customerRepository.findById(anyLong())).thenReturn(Optional.of(customer));
+        when(modelMapper.map(any(Customer.class), eq(CustomerDTO.class))).thenReturn(customerDTO);
+
+        CustomerDTO result = customerService.findCustomerById(1L);
+
+        assertNotNull(result);
+        assertEquals(customerDTO.getId(), result.getId());
+        assertEquals(customerDTO.getFirstName(), result.getFirstName());
+        assertEquals(customerDTO.getLastName(), result.getLastName());
+        
         verify(customerRepository, times(1)).findById(anyLong());
-        verify(converterService, times(1)).convertTo(any(), any());
     }
 
     /**
-     * Tests if null is returned when a customer ID is not found.
+     * Testa a exceção quando um cliente não é encontrado por ID.
      */
     @Test
-    void mustReturnNullWhenFindById() {
-        Optional<Customer> customerOptional = Optional.empty();
-        when(customerRepository.findById(anyLong())).thenReturn(customerOptional);
+    public void mustReturnResourceNotFoundExceptionWhenFindCustomerByIdWithInvalidId() {
+        when(customerRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        CustomerDTO result = customerService.findById(1L);
-
-        assertNull(result);
+        assertThrows(ResourceNotFoundException.class, () -> customerService.findCustomerById(999L));
+        
         verify(customerRepository, times(1)).findById(anyLong());
     }
 
     /**
-     * Tests successful retrieval of a customer by full name.
+     * Testa a atualização de um cliente.
      */
     @Test
-    void mustReturnSuccessWhenFindByFullName() {
-        final String firstName = "John";
-        final String lastName = "Douglas";
+    public void mustReturnSuccessWhenUpdateCustomer() {
+        when(customerRepository.findById(anyLong())).thenReturn(Optional.of(customer));
+        when(customerRepository.save(any(Customer.class))).thenReturn(customer);
+        
+        
+        doAnswer(invocation -> null)
+        .when(modelMapper)
+        .map(any(), eq(customer));
+        
+        when(modelMapper.map(any(Customer.class), eq(CustomerDTO.class))).thenReturn(customerDTO);
 
-        when(customerRepository.findByFirstNameAndLastName(anyString(), anyString())).thenReturn(Collections.singletonList(entity));
-        when(converterService.convertTo(any(), any())).thenReturn(dto);
+        CustomerDTO result = customerService.updateCustomer(1L, createCustomerRequest);
 
-        List<CustomerDTO> resultList = customerService.findByFullName(firstName, lastName);
-
-        assertFalse(resultList.isEmpty());
-        verify(customerRepository, times(1)).findByFirstNameAndLastName(anyString(), anyString());
-        verify(converterService, times(1)).convertTo(any(), any());
+        assertNotNull(result);
+        assertEquals(customerDTO.getId(), result.getId());
+        assertEquals(customerDTO.getFirstName(), result.getFirstName());
+        assertEquals(customerDTO.getLastName(), result.getLastName());
+        
+        verify(customerRepository, times(1)).findById(anyLong());
+        verify(modelMapper, times(1)).map(any(CreateCustomerRequest.class), eq(customer));
+        verify(customerRepository, times(1)).save(any(Customer.class));
     }
 
     /**
-     * Tests successful deletion of a customer by ID.
+     * Testa a exceção quando um cliente a ser atualizado não é encontrado.
      */
     @Test
-    void mustReturnSuccessWhenDelete() {
+    public void mustReturnResourceNotFoundExceptionWhenUpdateCustomerWithInvalidId() {
+        when(customerRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThrows(ResourceNotFoundException.class, () -> 
+            customerService.updateCustomer(999L, createCustomerRequest));
+        
+        verify(customerRepository, times(1)).findById(anyLong());
+    }
+
+    /**
+     * Testa a exclusão de um cliente.
+     */
+    @Test
+    public void mustReturnSuccessWhenDeleteCustomerById() {
         when(customerRepository.existsById(anyLong())).thenReturn(true);
-        doNothing().when(customerRepository).delete(any());
+        doNothing().when(customerRepository).deleteById(anyLong());
 
-        customerService.delete(dto.getId());
+        customerService.deleteCustomerById(1L);
+
+        verify(customerRepository, times(1)).existsById(anyLong());
+        verify(customerRepository, times(1)).deleteById(anyLong());
+    }
+
+    /**
+     * Testa a exceção quando um cliente a ser excluído não é encontrado.
+     */
+    @Test
+    public void mustReturnResourceNotFoundExceptionWhenDeleteCustomerByIdWithInvalidId() {
+        when(customerRepository.existsById(anyLong())).thenReturn(false);
+
+        assertThrows(ResourceNotFoundException.class, () -> customerService.deleteCustomerById(999L));
+        
         verify(customerRepository, times(1)).existsById(anyLong());
     }
 
     /**
-     * Tests if ResourceNotFoundException is thrown when trying to delete a non-existent customer.
+     * Testa a busca de todos os clientes com paginação.
      */
     @Test
-    void mustReturnResourceNotFoundExceptionWhenDelete() {
-        when(customerRepository.existsById(anyLong())).thenReturn(false);
-        assertThrows(ResourceNotFoundException.class, () -> customerService.delete(dto.getId()));
-        verify(customerRepository, times(1)).existsById(anyLong());
+    public void mustReturnSuccessWhenFindAllCustomersWithPagination() {
+        Page<Customer> customerPage = new PageImpl<>(java.util.List.of(customer));
+        Page<CustomerDTO> dtoPage = new PageImpl<>(java.util.List.of(customerDTO));
+        
+        when(customerRepository.findAll(any(PageRequest.class))).thenReturn(customerPage);
+        when(modelMapper.map(any(Customer.class), eq(CustomerDTO.class))).thenReturn(customerDTO);
+
+        Page<CustomerDTO> result = customerService.findAllCustomersWithPagination(0, 10);
+
+        assertNotNull(result);
+        assertEquals(1, result.getTotalElements());
+        
+        verify(customerRepository, times(1)).findAll(any(PageRequest.class));
     }
-}
+} 
