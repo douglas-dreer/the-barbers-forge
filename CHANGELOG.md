@@ -3,44 +3,58 @@
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
-e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/) e às [Diretrizes de Versionamento](GUIDELINE.md).
+e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
-## [0.0.2] - "Potion of Healing" - 2024-01-19
+## [0.0.3] - 2024-01-22
 
 ### Adicionado
-- ✨ Implementação de testes unitários para validação de documentos
-- 🧪 Testes para mapeamento de documentos (DocumentMapper)
-- 🚨 Testes para exceções personalizadas (ValidateDocumentServiceException e UniqueConstraintViolationException)
-- 🔍 Testes para o controlador de documentos (DocumentController)
-- 🛠️ Implementação da classe base de mapeamento (BaseMapper)
+- ✨ Implementação do CRUD completo de clientes
+- 🧪 Testes unitários para CustomerController
+- 🔍 Testes de integração para CustomerService
+- 📝 Documentação dos endpoints de cliente
 
 ### Alterado
-- ♻️ Refatoração dos testes para melhor cobertura
-- 📊 Melhoria na organização dos testes unitários
+- ♻️ Refatoração do mapeamento de entidades
+- 🎨 Melhoria na estrutura de testes
 
 ### Técnico
-- Implementação de testes para conversão entre entidades e DTOs
-- Adição de testes para validação de exceções
-- Melhoria na estrutura de testes do controlador
-- Implementação de classe base para mapeamento de objetos
+- Implementação do CustomerMapper
+- Adição de testes para conversão de DTOs
+- Configuração de testes de integração
+- Melhoria na cobertura de testes
+
+## [0.0.2] - 2024-01-19
+
+### Adicionado
+- ✨ Implementação do CRUD de documentos
+- 🧪 Testes unitários para DocumentService
+- 🔍 Testes de integração para DocumentService
+- 📝 Documentação dos endpoints de documento
+
+### Alterado
+- ♻️ Refatoração da estrutura de testes
+- 🎨 Melhoria na organização do código
+
+### Técnico
+- Implementação do DocumentMapper
+- Adição de testes para validação de documentos
+- Configuração de testes unitários
+- Implementação de exceções personalizadas
 
 ## [0.0.1] - 2024-01-17
 
 ### Adicionado
-- 🎉 Primeira versão do projeto The Barber's Forge!
-- 🔨 Implementação do CRUD básico de documentos
-- 📝 Documentação inicial do projeto
-- ✨ Validações para evitar documentos duplicados
-- 🎯 Endpoints REST para manipulação de documentos
-- 🔍 Busca paginada de documentos
-- 🛠️ Configuração inicial do Spring Boot
+- 🎉 Inicialização do projeto The Barber's Forge
+- ⚙️ Configuração inicial do Spring Boot
+- 🗃️ Configuração do banco de dados H2
+- 📝 Documentação básica do projeto
 
 ### Técnico
-- Implementação da camada de serviço para documentos
-- Criação dos DTOs para transferência segura de dados
-- Configuração do banco de dados H2 para desenvolvimento
-- Implementação de tratamento de exceções personalizado
-- Adição de testes unitários iniciais
+- Estruturação inicial do projeto
+- Configuração do ambiente de desenvolvimento
+- Implementação da estrutura base de APIs
+- Configuração inicial de testes
 
+[0.0.3]: https://github.com/douglasdreer/the-barbers-forge/compare/v0.0.2...v0.0.3
 [0.0.2]: https://github.com/douglasdreer/the-barbers-forge/compare/v0.0.1...v0.0.2
 [0.0.1]: https://github.com/douglasdreer/the-barbers-forge/releases/tag/v0.0.1
