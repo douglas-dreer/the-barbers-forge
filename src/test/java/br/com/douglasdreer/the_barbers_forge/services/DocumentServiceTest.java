@@ -22,15 +22,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.modelmapper.ModelMapper;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.test.util.ReflectionTestUtils;
-
 import br.com.douglasdreer.the_barbers_forge.dtos.DocumentDTO;
 import br.com.douglasdreer.the_barbers_forge.dtos.mappers.DocumentMapper;
 import br.com.douglasdreer.the_barbers_forge.dtos.request.CreateDocumentRequest;
@@ -45,7 +39,6 @@ import br.com.douglasdreer.the_barbers_forge.repositories.DocumentRepository;
 public class DocumentServiceTest {
     @InjectMocks
     private DocumentServiceImpl documentService;
-
 
     @Mock
     private DocumentRepository documentRepository;

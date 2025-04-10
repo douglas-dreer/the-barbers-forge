@@ -34,7 +34,7 @@ public class DocumentServiceImpl implements DocumentService {
             Document documentSaved = repository.save(mapper.toEntity(document));
             return mapper.toDTO(documentSaved);
         } catch (Exception e) {
-            throw new DocumentServiceException(e.getCause().getLocalizedMessage());
+            throw new DocumentServiceException(e.getLocalizedMessage());
         }
     }
 
@@ -77,6 +77,7 @@ public class DocumentServiceImpl implements DocumentService {
 
     private void validateDocumentForCreate(CreateDocumentRequest document) {
         Document entity = mapper.toEntity(document);
+        
         if (checkIfAlrightSave(entity)) {
             throw new DocumentServiceException("Document alright saved.");
         }
