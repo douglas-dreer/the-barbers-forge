@@ -5,6 +5,8 @@ import br.com.douglasdreer.the_barbers_forge.entities.Document;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 @Component
 public class DocumentMapper extends BaseMapper {
     /**
@@ -22,5 +24,9 @@ public class DocumentMapper extends BaseMapper {
 
     public <T> Document toEntity(T inputData) {
         return convertTo(inputData, Document.class);
+    }
+
+    public String toJson(Object object) throws JsonProcessingException {
+        return super.toJSON(object);
     }
 }
