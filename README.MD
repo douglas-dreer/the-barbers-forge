@@ -115,5 +115,5 @@ Contribuições são bem-vindas! Siga os passos abaixo para colaborar:
 Este projeto está licenciado sob a [MIT License](LICENSE).
 
 
-## Versão: 3.4.6
+## Versão: 3.4.7
 Última atualização: 10/04/2025
