@@ -59,7 +59,7 @@ public class CustomerMapper extends BaseMapper {
      */
     public String toJson(Object object) {
         try {
-            return super.toJson(object);
+            return super.toJSON(object);
         } catch (JsonProcessingException e) {
             throw new ConverterException("Erro ao converter objeto para JSON", e);
         }
