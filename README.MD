@@ -1,105 +1,130 @@
-# 💈 The Barber's Forge
-
-
+# The Barber's Forge
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=douglas-dreer_the-barbers-forge&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=douglas-dreer_the-barbers-forge)
 
-## 📝 Descrição
+## Descrição
 **The Barber's Forge** é um sistema completo para a gestão de barbearias, desenvolvido com Java 21 e Spring Boot. O projeto oferece funcionalidades para gerenciar clientes, produtos, serviços, agendamentos e controle financeiro, além de otimizar o gerenciamento de estoque.
 
-## 🚦 Status do Projeto
-🚧 Em desenvolvimento 🚧
+## Funcionalidades (Em Progresso)
 
-## ✨ Recursos Implementados ✅
-- 🛠️ Configuração inicial do ambiente
-- 🐘 Integração com PostgreSQL
-- 🔄 Configuração de CI/CD
-- 📊 Análise de código com SonarCloud
-- 🧪 Testes unitários básicos
-- 🛡️ Tratamento de exceções
-- 📑 Mapeamento inicial de DTOs
+- **Gerenciamento de Cadastro de Clientes:** Registro detalhado com informações pessoais e histórico de atendimentos.
+- **Gerenciamento de Cadastro de Produtos:** Gestão de itens para venda e consumo interno.
+- **Gerenciamento de Cadastro de Serviços:** Definição de serviços oferecidos com preços e durações personalizadas.
+- **Agendamento de Horário:** Calendário interativo com controle de disponibilidade.
+- **Notificações de Horário:** Notificação via e-mail, mensagem de texto ou whatsApp.
+- **Envio de E-mail Propaganda** Envio de promoções via e-mail.
+- **Sistema de Fidelização**: Descontos especiais para fidelização de clientes.
+- **Controle de Caixa (Financeiro):** Monitoramento de movimentações financeiras.
+- **Controle de Estoque:** Acompanhamento de estoque com alertas para reposição.
 
-## 🔄 Recursos em Desenvolvimento
-- **👥 Módulo de Clientes**
-  - 📝 Cadastro e gestão de clientes
-  - 📋 Histórico de atendimentos
-  - ⭐ Sistema de fidelização
+## Tecnologias Utilizadas
 
-- **🛍️ Módulo de Produtos e Serviços**
-  - 📦 Cadastro de produtos
-  - ✂️ Gestão de serviços
-  - 📊 Controle de estoque
+- **Linguagem:** Java 21
+- **Framework:** Spring Boot
+- **Banco de Dados:** PostgreSQL
 
-- **📅 Módulo de Agendamentos**
-  - 📆 Calendário interativo
-  - 🔔 Sistema de notificações
-  - ✅ Confirmação automática
+## Como Executar o Projeto
 
-- **💰 Módulo Financeiro**
-  - 💵 Controle de caixa
-  - 📈 Relatórios gerenciais
-  - 💳 Gestão de pagamentos
-
-## 🛠️ Tecnologias Utilizadas
-- **⚡ Back-end:** Java 21
-- **🔧 Framework:** Spring Boot 3.x
-- **🗃️ Banco de Dados:** PostgreSQL
-- **📚 Documentação:** Swagger
-- **📊 Qualidade:** SonarCloud
-- **🔄 CI/CD:** GitHub Actions
-
-## 📋 Pré-requisitos
-- ☕ Java Development Kit (JDK) 21
-- 🔨 Maven 3.8.x ou superior
-- 🐘 PostgreSQL 15.x
-
-## 🚀 Instalação e Execução
-
-1. **📥 Clone o repositório:**
+1. **Clonar o Repositório:**
    ```bash
    git clone https://github.com/douglas-dreer/the-barbers-forge.git
+   ```
+
+2. **Acessar o Diretório:**
+   ```bash
    cd the-barbers-forge
    ```
 
-2. **⚙️ Configure o banco de dados:**
-   - Crie um banco de dados PostgreSQL
-   - Copie o arquivo `application.properties.example` para `application.properties`
-   - Configure as credenciais do banco no arquivo `application.properties`
-
-3. **🔨 Compile o projeto:**
+3. **Compilar e Executar:**
    ```bash
-   mvn clean install
+   ./mvnw spring-boot:run
    ```
 
-4. **▶️ Execute a aplicação:**
-   ```bash
-   mvn spring-boot:run
-   ```
+4. **Acessar a Aplicação:**
+    - URL padrão: [http://localhost:8081](http://localhost:8080)
 
-5. **🌐 Acesse a aplicação:**
-   - API: http://localhost:8080
-   - Documentação Swagger: http://localhost:8080/swagger-ui.html
+## Configuração do Banco de Dados
 
-## 🔧 Configuração do Ambiente de Desenvolvimento
+O projeto está configurado com o banco de dados **PostgreSQL**.
 
-1. **📝 Variáveis de Ambiente:**
-   ```properties
-   POSTGRES_HOST=localhost
-   POSTGRES_PORT=5432
-   POSTGRES_DB=barbers_forge
-   POSTGRES_USER=seu_usuario
-   POSTGRES_PASSWORD=sua_senha
-   ```
+### Passos para Configuração:
 
-2. **🐘 Configuração do PostgreSQL:**
-   ```sql
-   CREATE DATABASE barbers_forge;
-   ```
+1. **Instalar o PostgreSQL:**
+    - Se ainda não tiver o PostgreSQL instalado, siga [este link](https://www.postgresql.org/download/) para instalar.
 
-3. **🔄 Atualize as dependências:**
-   ```bash
-   mvn dependency:resolve
-   ```
+2. **Criar o Banco de Dados:**
+    - No PostgreSQL, crie o banco de dados `the-barbers-forge`:
+      ```sql
+      CREATE DATABASE the-barbers-forge;
+      ```
 
-## Versão: 3.2.5
-Última atualização: 10/04/2025
+3. **Configuração do Banco de Dados no Projeto:**
+    - O arquivo `application.properties` está configurado para conectar-se ao banco de dados PostgreSQL:
+      ```yml
+      spring:
+       datasource:
+         url: jdbc:postgresql://localhost:5432/the-barbers-forge
+         username: your_username
+         password: your_password
+         driver-class-name: org.postgresql.Driver
+       jpa:
+         database-platform: POSTGRES
+      ```
+
+4. **Configuração do Banco de Dados:**
+    - Certifique-se de ter o driver do PostgreSQL incluído nas dependências do projeto:
+      ```xml
+      <dependency>
+          <groupId>org.postgresql</groupId>
+          <artifactId>postgresql</artifactId>
+          <version>42.2.5</version>
+      </dependency>
+      ```
+
+### Acesso ao Banco de Dados:
+
+Você pode acessar o banco de dados PostgreSQL usando um cliente de banco de dados, como
+o [pgAdmin](https://www.pgadmin.org/), ou usando a linha de comando do PostgreSQL:
+
+```bash
+psql -h localhost -U your_username -d the_barbers_forge
+```
+
+## Estrutura do Projeto
+
+- `src/main/java`: Contém as classes principais do projeto.
+- `src/main/resources`: Contém arquivos de configuração.
+- `application.properties`: Configuração do projeto.
+
+## Futuras Melhorias
+
+- Gerenciamento de Cadastro de Clientes.
+- Gerenciamento de Cadastro de Produtos.
+- Gerenciamento de Cadastro de Serviços.
+- Gerenciamento de Agendamento de Horário.
+- Notificações de Horário.
+- Envio de E-mail Propaganda.
+- Sistema de Fidelização.
+- Controle de Caixa (Financeiro).
+- Controle de Estoque.
+- Implementação de autenticação e autorização.
+- Documentação em SWAGGER.
+- Relatórios financeiros detalhados.
+
+## Contribuição
+
+Contribuições são bem-vindas! Siga os passos abaixo para colaborar:
+
+1. Fork o repositório.
+2. Crie uma branch com sua feature: `git checkout -b feature/nova-feature`
+3. Commit suas alterações: `git commit -m 'Adiciona nova funcionalidade'`
+4. Push para a branch: `git push origin feature/nova-feature`
+5. Abra um Pull Request.
+
+## Licença
+
+Este projeto está licenciado sob a [MIT License](LICENSE).
+
+## Versão: 3.2.8
+
+Última atualização: 17/04/2025
